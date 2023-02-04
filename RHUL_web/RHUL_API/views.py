@@ -7,6 +7,7 @@ from .serializers import Account_Holder_serializers, Company_serializers
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 
 from .serializers import Account_Holder_serializers
 from django.http import HttpResponse
@@ -28,6 +29,7 @@ class AccountHolderAPIView(APIView):
         serializer = Account_Holder_serializers(modeldata, many=True)
         return Response(serializer.data)
 
+
 class CompanyAPIView(APIView):
 
     def get(self, request):
@@ -36,19 +38,32 @@ class CompanyAPIView(APIView):
         return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def companydetail(request, name):
     try:
         company = CompanyInfo.objects.get(name=name)
 
     except CompanyInfo.DoesNotExist:
-        # return HttpResponse(status=404)
         return Response('No Company found!', status=status.HTTP_404_NOT_FOUND)
+
     if request.method == 'GET':
         serializer = Company_serializers(company)
         return Response(serializer.data)
-        # customers = self.get_object(id)
-        # serializer = CustomerSerializer(customers)
-        # return Response(serializer.data)
 
+    elif request.method == 'POST':
+        serializer = Company_serializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == 'PUT':
+        serializer = Company_serializers(company, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        company.delete()
+        return Response('Company deleted', status=status.HTTP_204_NO_CONTENT)
