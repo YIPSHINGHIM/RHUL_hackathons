@@ -21,9 +21,9 @@ class Account_Holder(models.Model):
 
 class CompanyInfo(models.Model):
     name = models.CharField(max_length = 100)
-    brand_type = models.CharField(max_length=100)
-    company_about = models.TextField()
-    company_total_ads = models.IntegerField(default = 0)
+    type = models.CharField(max_length=100)
+    about = models.TextField()
+    total_ads = models.IntegerField(default = 0)
 
     def __repr__(self):
         return self.name
