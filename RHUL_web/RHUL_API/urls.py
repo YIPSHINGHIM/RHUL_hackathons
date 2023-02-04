@@ -1,5 +1,6 @@
 from django.urls import path, include
 from .views import Dashboard, AccountHolderAPIView, CompanyAPIView, companydetail
+from .views import Dashboard, AccountHolderAPIView, CompanyAPIView
 
 urlpatterns = [
     path('', Dashboard, name='/ome'),

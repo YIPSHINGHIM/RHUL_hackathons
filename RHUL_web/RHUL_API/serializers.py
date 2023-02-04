@@ -8,7 +8,6 @@ class Account_Holder_serializers(serializers.ModelSerializer):
         field = ['name', 'social_media', 'profit', 'bank_acc', 'type', 'followers', 'about']
         exclude = ['photo']
 
-
 class Company_serializers(serializers.ModelSerializer):
     class Meta:
         model = CompanyInfo

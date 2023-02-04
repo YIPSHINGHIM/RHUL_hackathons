@@ -8,8 +8,10 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from .serializers import Account_Holder_serializers
 from django.http import HttpResponse
 from rest_framework.response import Response
+from .serializers import Company_serializers
 import datetime
 
 
@@ -25,7 +27,6 @@ class AccountHolderAPIView(APIView):
         modeldata = Account_Holder.objects.all()
         serializer = Account_Holder_serializers(modeldata, many=True)
         return Response(serializer.data)
-
 
 class CompanyAPIView(APIView):
 
@@ -46,3 +47,8 @@ def companydetail(request, name):
     if request.method == 'GET':
         serializer = Company_serializers(company)
         return Response(serializer.data)
+        # customers = self.get_object(id)
+        # serializer = CustomerSerializer(customers)
+        # return Response(serializer.data)
+
+
