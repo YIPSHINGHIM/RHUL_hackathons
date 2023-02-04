@@ -6,6 +6,7 @@ from .models import Account_Holder, CompanyInfo
 from .serializers import Account_Holder_serializers
 from django.http import HttpResponse
 from rest_framework.response import Response
+from .serializers import Company_serializers
 import datetime
 
 # Create your views here.
@@ -26,8 +27,14 @@ class AccountHolderAPIView(APIView):
 
 class CompanyAPIView(APIView):
     def get(self, request):
+        # model = CompanyInfo.objects.all()
         model = CompanyInfo.objects.all()
-        return Response(model)
+        serializer = Company_serializers(model, many=True)
+        return Response(serializer.data)
         # customers = self.get_object(id)
         # serializer = CustomerSerializer(customers)
         # return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        ret = CompanyInfo.objects.get(id=id)
+        ser = Company_serializers(ret)
+        return Response(ser.data)
