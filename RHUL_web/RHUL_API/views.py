@@ -9,11 +9,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 
-from .serializers import Account_Holder_serializers
-from django.http import HttpResponse
-from rest_framework.response import Response
-from .serializers import Company_serializers
-import datetime
+# from .serializers import Account_Holder_serializers
+# from django.http import HttpResponse
+# from rest_framework.response import Response
+# from .serializers import Company_serializers
+# import datetime
 
 
 # Create your views here.
@@ -37,7 +37,6 @@ class CompanyAPIView(APIView):
         serializer = Company_serializers(model, many=True)
         return Response(serializer.data)
 
-
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def companydetail(request, name):
     try:
@@ -53,7 +52,7 @@ def companydetail(request, name):
     elif request.method == 'POST':
         serializer = Company_serializers(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save()  
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -67,3 +66,33 @@ def companydetail(request, name):
     elif request.method == 'DELETE':
         company.delete()
         return Response('Company deleted', status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def account_holder_detail(request, name):
+    try:
+        account_holder = Account_Holder.objects.get(name=name)
+
+    except Account_Holder.DoesNotExist:
+        return Response('No account_holder found!', status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = Account_Holder_serializers(account_holder)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = Account_Holder_serializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()  
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'PUT':
+        serializer = Account_Holder_serializers(account_holder, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        account_holder.delete()
+        return Response('account_holder deleted', status=status.HTTP_204_NO_CONTENT)

@@ -15,9 +15,9 @@ class Account_Holder(models.Model):
     followers = models.PositiveBigIntegerField()
     about = models.TextField()
 
-    ts_id = models.CharField(max_length=50)
-    ts_date = models.DateTimeField('transaction date')
-    ts_amount = models.IntegerField(default = 0)
+    # ts_id = models.CharField(max_length=50)
+    # ts_date = models.DateTimeField('transaction date')
+    # ts_amount = models.IntegerField(default = 0)
 
     def __repr__(self):
         return self.name
