@@ -1,0 +1,16 @@
+{% block content %}
+<h1>login</h1>
+<form method="post" action="{% url 'accounts:login' %}">
+  {% csrf_token %}
+  {% include 'accounts/form_errors.html' %}
+  <div>
+    <label>user ID</label>
+    <input type="text" name="username" id="username">
+  </div>
+  <div>
+    <label>password</label>
+    <input type="text" name="password" id="password">
+  </div>
+  <button type="submit">login</button>
+</form>
+{% endblock %}
